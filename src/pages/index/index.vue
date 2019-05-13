@@ -4,7 +4,7 @@
       class="swiper"
       indicator-dots="true"
       circular="true"
-      bindchange="bindchange"
+      @bindchange="bindchange"
       :style="{height: imgsHeight[current] + 'px'}"
     >
       <block v-for="(item, index) in imgUrls" :key="index">
@@ -14,12 +14,28 @@
             class="slide_image"
             :data-id="index"
             mode="aspectFill"
-            bindload="imageLoad"/>
+            @bindload="imageLoad"/>
         </swiper-item>
       </block>
     </swiper>
 
-    <div>首页</div>
+    <view class="btns">
+      <van-row>
+        <van-col span="6" style="text-align: center;">
+          <van-button type="default" size="small">默认按钮</van-button>
+        </van-col>
+        <van-col span="6" style="text-align: center;">
+          <van-button type="primary" size="small">成功按钮</van-button>
+        </van-col>
+        <van-col span="6" style="text-align: center;">
+          <van-button type="warning" size="small">警告按钮</van-button>
+        </van-col>
+        <van-col span="6" style="text-align: center;">
+          <van-button type="danger" size="small">危险按钮</van-button>
+        </van-col>
+      </van-row>
+    </view>
+
   </div>
 </template>
 
@@ -80,6 +96,9 @@ export default {
         height: 100%;
       }
     }
+  }
+  .btns {
+    padding: 30rpx 0;
   }
 }
 </style>
