@@ -1,9 +1,20 @@
 <template>
-  <div>
-    <swiper v-if="imgUrls.length > 0" indidator-dots="imgUrls.length > 1">
+  <div class="container">
+    <swiper
+      class="swiper"
+      indicator-dots="true"
+      circular="true"
+      bindchange="bindchange"
+      :style="{height: imgsHeight[current] + 'px'}"
+    >
       <block v-for="(item, index) in imgUrls" :key="index">
-        <swiper-item>
-          <image :src="item" mode="scaleToFill"/>
+        <swiper-item class="swiper_item">
+          <image
+            :src="item.url"
+            class="slide_image"
+            :data-id="index"
+            mode="aspectFill"
+            bindload="imageLoad"/>
         </swiper-item>
       </block>
     </swiper>
@@ -13,25 +24,62 @@
 </template>
 
 <script>
-const img01 = require('@static/swiper/swiper_01.jpg')
-const img02 = require('@static/swiper/swiper_02.jpg')
-const img03 = require('@static/swiper/swiper_03.jpg')
+import {api} from '@/api'
 
 export default {
   data () {
     return {
       motto: 'Hello miniprograme',
-      imgUrls: [img01, img02, img03]
+      windowWidth: 0,
+      windowHeight: 0,
+      imgUrls: api.home.swiperImgs,
+      imgsHeight: []
     }
   },
-
-  methods: {},
-
+  computed: {
+    // 以最高图片的高度作为 swiper 的高度
+    swiperHeight () {
+      return Math.max(...this.imgsHeight)
+    }
+  },
+  methods: {
+    // 每张图片加载完成会执行 imageload 方法
+    imageLoad: function (e) {
+      // 获取图片宽高比
+      const ratio = e.detail.width / e.detail.height
+      // 按照宽高比计算图片宽度 100% 时的高度
+      const imgHeight = this.windowWidth / ratio
+      // 把每一张图片对应的高度记录到 imgsHeight 数组里
+      this.imgsHeight[e.target.dataset.id] = imgHeight
+      // console.log(this.imgsHeight)
+    }
+  },
   created () {
-    // let app = getApp()
+    // 获取设备屏幕尺寸
+    wx.getSystemInfo({
+      success: res => {
+        this.windowWidth = res.windowWidth
+        this.windowHeight = res.windowHeight
+      }
+    })
   }
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+.container {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  .swiper {
+    width: 100%;
+    background-color: skyblue;
+    .swiper_item {
+      image {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+}
 </style>

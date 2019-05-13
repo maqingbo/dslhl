@@ -33,11 +33,11 @@ export default {
 <style>
 .container {
   height: 100%;
-  display: flex;
+  /* display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  padding: 200rpx 0;
+  padding: 200rpx 0; */
   box-sizing: border-box;
 }
 /* this rule will be remove */
